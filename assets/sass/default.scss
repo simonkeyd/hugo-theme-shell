@@ -43,10 +43,10 @@ body {
 
 .cursor {
     visibility: var(--cursor-visibility);
-        content: "|";
-        overflow: hidden;
-        color: white;
-        animation: blink 500ms linear infinite alternate;
+    content: "▊";
+    overflow: hidden;
+    color: white;
+    animation: blink 500ms linear infinite alternate;
 }
 
 #cd, #whoami, #cat, #tree {
