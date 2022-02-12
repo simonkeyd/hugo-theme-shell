@@ -1,8 +1,10 @@
 {{ define "main" }}
-    {{ $env := printf "<strong><span id='user'>%s@%s</span><span id='terminal'>:</span><span id='dir'>~/%s</span></strong><span id='terminal'>$</span>" .Site.Params.Terminal.userName .Site.Params.Terminal.pcName "" | safeHTML }}
-    {{ $envWithDir := printf "<strong><span id='user'>%s@%s</span><span id='terminal'>:</span><span id='dir'>~/%s</span></strong><span id='terminal'>$</span>" .Site.Params.Terminal.userName .Site.Params.Terminal.pcName .Site.Params.Terminal.workDir | safeHTML }}
+    {{ $env := printf "<strong><span id='user'>➜</span><span id='terminal'> </span><span id='dir'>~/%s</span></strong>" "" | safeHTML }}
+    {{ $envWithDir := printf "<strong><span id='user'>➜</span><span id='terminal'> </span><span id='dir'>~/%s</span><span id='version_header'> git:(</span><span id='version'>main</span><span id='version_header'>)</span></span></strong>" .Site.Params.Terminal.workDir | safeHTML }}
 
     {{ $cd := printf "<span id='terminal'>cd %s</span>" .Site.Params.Terminal.workDir | safeHTML }}
+    {{ $whoami := printf "<span id=terminal>whoami</span>" | safeHTML }}
+    {{ $userName := printf "<span id=terminal>%s</span>" .Site.Params.Terminal.userName | safeHTML }}
     {{ $cat := printf "<span id=terminal>cat %s</span>" .Site.Params.Terminal.profile | safeHTML }}
 
     {{ $description := "" }}
@@ -23,7 +25,7 @@
     {{ $leaf := "" }}
     {{ if .Site.Params.Tree.use }}
     {{ $tree = printf "<span id='terminal'>tree ./%s/</span>" .Site.Params.Tree.folderName | safeHTML}}
-    {{ $leaf = printf "%s<strong><span id='dir'>./%s/</span></strong><br>" $leaf .Site.Params.Tree.folderName | safeHTML}}
+    {{ $leaf = printf "%s<strong><span id='terminal'>./%s/</span></strong><br>" $leaf .Site.Params.Tree.folderName | safeHTML}}
         {{ range $index, $val := .Site.Params.Tree.files }}
             {{ $ac := index $val 0}}
             {{ $link := index $val 1}}
@@ -44,12 +46,12 @@
 
     {{ $end := $env }}
 
-    {{ $payload := delimit (slice $cd $cat $description $tree $leaf $end) "" }}
+    {{ $payload := delimit (slice $cd $whoami $userName $cat $description $tree $leaf $end) "" }}
 
     {{ $ps1Delay := $.Site.Params.Terminal.ps1Delay }}
     {{ $stdoutDelay :=  $.Site.Params.Terminal.stdoutDelay }}
     {{ $commandDelay := $.Site.Params.Terminal.commandDelay }}
 
-    {{ partial "partials/typeIndex.html" (dict "context" . "env" $env "cd" $cd "envWithDir" $envWithDir "cat" $cat "description" $description "tree" $tree "leaf" $leaf "ps1delay" $ps1Delay "stdoutdelay" $stdoutDelay "commanddelay" $commandDelay ) }}
+    {{ partial "partials/typeIndex.html" (dict "context" . "env" $env "cd" $cd "envWithDir" $envWithDir "whoami" $whoami "userName" $userName "cat" $cat "description" $description "tree" $tree "leaf" $leaf "ps1delay" $ps1Delay "stdoutdelay" $stdoutDelay "commanddelay" $commandDelay ) }}
 
 {{ end }}
